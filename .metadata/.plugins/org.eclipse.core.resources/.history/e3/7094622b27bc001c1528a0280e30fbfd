@@ -1,0 +1,49 @@
+//create a class book  
+package internet;
+import java.io.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+
+public class Book {
+    private String title;
+    private int author_id;
+    private String book_isbn;
+    private float price;
+    private String description;
+    private int genre_id;
+    //takes a database query result and creates a book object
+    public Book(ResultSet rs) throws SQLException {
+        System.out.println(rs);
+    }
+
+    public Book (String title, int author_id, String book_isbn, double priceDouble, String description, int genre_id) {
+        this.title = title;
+        this.author_id = author_id;
+        this.book_isbn = book_isbn;
+        this.price = priceDouble;
+        this.description = description;
+        this.genre_id = genre_id;
+    }
+
+	public String getIsbn() {
+		return this.book_isbn;
+	}
+    public String getTitle() {
+        return this.title;
+    }
+    public int getAuthorId() {
+        return this.author_id;
+    }
+    public double getPrice() {
+        return this.price;
+    }
+    public String getDescription() {
+        return this.description;
+    }
+
+	public int getGenreId() {
+		// TODO Auto-generated method stub
+		return this.genre_id;
+	}
+}

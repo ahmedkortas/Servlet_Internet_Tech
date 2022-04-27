@@ -1,0 +1,159 @@
+package internet;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class DbConnection {
+    //create a local database connection constructor
+	Connection conn;
+	
+    public DbConnection() throws ClassNotFoundException {
+        //connect to mariaDB with username = root and password = ahmed
+        //and database name = bushshop
+        //and host = localhost
+        //and port = 3306
+        //and driver = com.mysql.jdbc.Driver
+        //and url = jdbc:mysql://localhost:3306/bushshop
+        //and user = root
+        //and password = ahmed
+    	
+//    	Class.forName("com.mysql.jdbc.Driver")
+        try {
+        	 Class.forName("org.mariadb.jdbc.Driver");
+             conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/db", "root", "ahmed");
+             
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //create a method to return all the books in table books 
+    public ResultSet getBooks() throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM books");
+        return rs;
+    }
+
+    //a method that adds a book to the table books 
+    public void addBook(String title, int author_id, String book_isbn, float price, String description, int genre_id) throws SQLException {
+        Statement stmt = conn.createStatement();
+        try{
+            stmt.executeUpdate("INSERT INTO books VALUES ('" + title + "','" + author_id + "','" + book_isbn + "','" + price + "','" + description + "','" + genre_id + "')");
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //create a method that checks if the author exists in the table author by the name given in the parameter
+    //if not create a new author and return the author id
+    //if yes return the author id
+    public int cheackAuthorAndCreate(String authorName) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM author WHERE author_name = '" + authorName + "'");
+        if(rs.next()) {
+            return rs.getInt("author_id");
+       }else {
+           stmt.executeUpdate("INSERT INTO author (author_name) VALUES('" + authorName + "')");
+           rs = stmt.executeQuery("SELECT * FROM author WHERE author_name = '" + authorName + "'");
+           rs.next();
+           return rs.getInt("author_id");
+        }
+    }
+
+    public int checkGenre(String genreName) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM genre WHERE genre_name = '" + genreName + "'");
+        System.out.println("we are here ");
+        if(rs.next()) {
+            return -1;
+        }else {
+        	System.out.println("genre added");
+            stmt.executeUpdate("INSERT INTO genre (genre_name) VALUES('" + genreName + "')");
+            rs = stmt.executeQuery("SELECT * FROM genre WHERE genre_name = '" + genreName + "'");
+            rs.next();
+            return rs.getInt("genre_id");
+        }
+    }
+
+
+    public boolean checkISBN(String isbn) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM books WHERE book_isbn = '" + isbn + "'");
+        if(rs.next()) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+    //create a method that will query the database for all genres and return them as a list of genres
+    public List<String> getGenres() throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM genre");
+        List<String> genres = new ArrayList<>();
+        while(rs.next()) {
+            //get the parameter name and id 
+            String name = rs.getString("genre_name");
+            //create a new genre object with the name and id
+            //add the genre to the list
+            genres.add(name);
+        }
+        return genres;
+    }
+
+
+
+    //create a method that cheks if a genre name exists in
+
+    public boolean addBook(Book book) throws SQLException {
+        Statement stmt = conn.createStatement();
+        if(checkISBN(book.getIsbn())) {
+            return false;
+        }else {
+            int author_id = cheackAuthorAndCreate(book.getAuthorName());
+            stmt.executeUpdate("INSERT INTO books (title, book_isbn , author_id , price , description , genre_name) VALUES('" + book.getTitle()+ "','" + book.getIsbn() +"','" + author_id  +  "','" + book.getPrice() + "','" + book.getDescription() + "','" + book.getGenreName() + "')");
+            return true;
+        }
+    }
+
+//    public ArrayList<Book> getBooksByGenre(String genreName) throws SQLException {
+//        Statement stmt = conn.createStatement();
+//        String query = "SELECT * FROM books ";
+//        ResultSet books = stmt.executeQuery(query);
+//        ArrayList<Book> booksList = new ArrayList<Book>();
+//        while(books.next()) {
+//            String[] bookGenre = books.getString("genre_name").split(",");
+//            if(bookGenre.contains(genreName)) {
+//                booksList.add(new Book(books.getString("title"), books.getInt("author_id"), books.getString("book_isbn"), books.getFloat("price"), books.getString("description"), books.getString("genre_name")));
+//            }
+//        }
+//        return books;
+//    }
+
+    //create a method that queries the table author 
+    //and returns the author name and the author id
+    public List<Author> getAuthors() throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM author");
+        List<Author> authorList = new ArrayList<>();
+        int id =-1;
+        String name="";
+        while(rs.next()) {
+        	id=rs.getInt("author_id");
+        	name=rs.getString("author_name");
+        }
+        Author author=new Author(id,name);
+        authorList.add(author);
+        authorList.remove(0);
+        return authorList;
+    }
+
+}
