@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="addBook" method="post">
+      <input type="text" name="title" placeholder="Title" />
+      <input type="text" name="authorName" placeholder="author" />
+      <input type="text" name="bookISBN" placeholder="ISBN" />
+      <!-- create a drop box with 5 categories for books -->
+      <select name="genreNane">
+        <option value="">Select Category</option>
+        <option value="Fiction">Fiction</option>
+        <option value="Non-Fiction">Non-Fiction</option>
+        <option value="Cooking">Cooking</option>
+        <option value="History">History</option>
+      </select>
+      <input type="number" name="price" placeholder="Price" />
+      <input type="text" name="description" placeholder="Description" />
+      <input type="submit" value="Add Book" />
+    </form>
+  </body>
+</html>
