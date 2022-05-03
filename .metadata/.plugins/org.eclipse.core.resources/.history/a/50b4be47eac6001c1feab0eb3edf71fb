@@ -1,0 +1,170 @@
+package internet;
+
+import java.io.*;
+import java.sql.SQLException;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map.*;
+
+// Extend HttpServlet class to create Http Servlet
+public class addBook extends HttpServlet {
+
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String mymsg;
+	private DbConnection cn=null;
+
+   public void init() throws ServletException {
+      mymsg = "Hello World!";
+		DbConnection conn = null;
+		try {
+			conn = new DbConnection();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		this.cn = conn;	
+   }
+   
+   
+   protected void processRequest(HttpServletRequest request,HttpServletResponse response)throws ServletException, IOException{
+               response.setContentType("text/html;charset=UTF-8");
+               try (PrintWriter out = response.getWriter()) {
+               List<String> genreList = cn.getGenres();
+               // Setting the attribute of the request object
+               // which will be later fetched by a JSP page
+               request.setAttribute("data", genreList);
+               // Creating a RequestDispatcher object to dispatch
+               // the request the request to another resource
+               RequestDispatcher rd = 
+               request.getRequestDispatcher("AddBook.jsp");
+               // The request will be forwarded to the resource 
+               // specified, here the resource is a JSP named,
+               // "stdlist.jsp"
+               rd.forward(request, response);
+         }catch(Exception e){
+            e.printStackTrace();
+         }
+}
+
+
+public void doGet(HttpServletRequest request, 
+      HttpServletResponse response)
+      throws ServletException, IOException 
+   {
+//	processRequest(request,response);
+	getRequestTheDumbWay(request,response);
+   }
+
+   public void processPostRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException{
+      //get request parameters
+      List<String>	paramNames	=	Collections.list(request.getParameterNames());
+      String title = request.getParameter("title");
+      String author = request.getParameter("Author");
+      float price = Float.parseFloat(request.getParameter("Price"));
+      String isbn = request.getParameter("ISBN");
+      String description = request.getParameter("Description");
+      paramNames.remove("title");
+      paramNames.remove("Author");
+      paramNames.remove("Price");
+      paramNames.remove("ISBN");
+      paramNames.remove("Description");
+      paramNames.remove("Sign Up");
+      String Kategorien = "";
+      for(int i=0;i<paramNames.size();i++){
+    	 int x =Integer.parseInt(paramNames.get(i));
+         cn.addBuchCategory(isbn,x);
+      }
+      try {
+         cn.addBook(new Book(title, author, isbn, price, description));
+         response.setContentType("text/html");
+      PrintWriter out = response.getWriter();
+      out.println("<!DOCTYPE html>");
+               out.println("<html>");
+               out.println("<head>");
+               out.println("<title>Add a book</title>");
+               out.println("</head>");
+               out.println("<body>");
+               out.println("<h1>Book added!</h1>");
+               out.println("<a href='addBook'>Back to adding a new book</a>");
+               out.println("</body>");
+               out.println("</html>");
+      } catch (SQLException e) {
+         e.printStackTrace();
+      }
+   }
+
+
+
+
+  public void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+       //get the request body
+	  try {
+		processPostRequest(request,response);
+	} catch (IOException | SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+   }
+   
+    public void destroy() {
+       
+   }
+
+
+   public void getRequestTheDumbWay(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+	      PrintWriter out = response.getWriter();
+      out.println(
+    "<!DOCTYPE html>"+
+      "<html>"+
+       "<head>"+
+          "<meta charset='UTF-8' />"+
+          "<title>Buchformular</title>"+
+          "<link href='http://fonts.googleapis.com/css?family=Bitter'rel='stylesheet'type='text/css'/>"
+         +"<link rel='stylesheet' href='../../../webapp/BuchUndKategorieEinfugenFormular.css' type='text/css' />"+
+        "<title>Add a book</title>"    +    "</head>"+
+        "<body>"+
+         "<h1>Buchformular</h1>"+
+         "<div class='form-style-10'>"
+         + " <h1>buch hinzüfügen<span>bitte die Daten in den feldern richtig eingeben</span>"+
+            "</h1>"+
+            "<form action='addBook' method='post'>"+
+             "<div class='section'><span>1</span>title</div>"+
+              "<div class='inner-wrap'>"+
+                "<label>title <input type='text' name='title' required /></label>"+
+              "</div>"+
+              "<div class='section'><span>2</span> ISBN</div>"+
+              "<div class='inner-wrap'>"+
+               " <label> ISBN <input type='text' name='ISBN' required /></label>"+
+              "</div>"+
+      
+             " <div class='section'><span>3</span>Preis</div>"+
+             " <div class='inner-wrap'>"+
+              "  <label>Preis <input type='number' name='Price' required step='0.01'/></label>"+
+             " </div>"+
+      
+              "<div class='section'><span>4</span>Autor</div>"+
+              "<div class='inner-wrap'>"+
+                "<label>Autor <input type='text' name='Author' required /></label>"+
+             " </div>"+
+              "<div class='section'><span>5</span>Describtion</div>"+
+              "<div class='inner-wrap'>"+
+               " <label>Describtion <input type='text' name='Description' required/></label>"+
+              "</div>"+
+              "<div class='section'><span>6</span>Kategorie/n</div>"+
+              "<div class='inner-wrap'>"+
+              "<div class='button-section'>"+
+                "<input type='submit' name='Sign Up' />"+
+              "</div>"+
+            "</form>"+
+          "</div>"+
+        "</body>"+
+      "</html>"
+      );
+   }
+}
