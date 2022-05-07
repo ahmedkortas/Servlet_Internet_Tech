@@ -6,7 +6,11 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
+		<item key="selection" value="input"/>
 		<list key="findhistory">
+			<item value="input"/>
+			<item value="addBuchCategory"/>
+			<item value="new book"/>
 			<item value="Genre"/>
 		</list>
 		<list key="replacehistory">
