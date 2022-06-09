@@ -6,19 +6,30 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="input"/>
+		<item key="selection" value="menge"/>
 		<list key="findhistory">
-			<item value="input"/>
+			<item value="menge"/>
+			<item value="logout"/>
+			<item value="log"/>
+			<item value="loug"/>
+			<item value="&lt;i"/>
+			<item value="#{"/>
+			<item value="register"/>
+			<item value="&lt;a"/>
+			<item value="&lt;a "/>
+			<item value="&lt;a href"/>
+			<item value="books"/>
+			<item value="top"/>
+			<item value="black"/>
+			<item value="li a"/>
 			<item value="addBuchCategory"/>
-			<item value="new book"/>
-			<item value="Genre"/>
 		</list>
 		<list key="replacehistory">
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="762"/>
-		<item key="DIALOG_Y_ORIGIN" value="217"/>
+		<item key="DIALOG_X_ORIGIN" value="1472"/>
+		<item key="DIALOG_Y_ORIGIN" value="263"/>
 		<item key="DIALOG_WIDTH" value="414"/>
 		<item key="DIALOG_HEIGHT" value="454"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>

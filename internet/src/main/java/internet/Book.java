@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
+
 public class Book {
     private String title;
     private String author_id;
@@ -16,7 +17,7 @@ public class Book {
 //        System.out.println(rs);
 //    }
 
-    public Book (String title, String author, String book_isbn, double price, String description) {
+    public Book (String title, String author, String book_isbn, float price, String description) {
         this.title = title;
         this.author_id = author;
         this.book_isbn = book_isbn;
@@ -36,6 +37,11 @@ public class Book {
     public double getPrice() {
         return this.price;
     }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+   
     public String getDescription() {
         return this.description;
     }

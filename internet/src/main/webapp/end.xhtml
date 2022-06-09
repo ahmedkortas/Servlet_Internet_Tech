@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <h:head>
+    <meta charset="UTF-8" />
+    <h:panelGroup rendered="#{warenkorbHandler.getAnzahl()==0}">
+      <meta http-equiv="Refresh" content="0; URL=Warenkorb.xhtml" />
+    </h:panelGroup>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="images/apple-touch-icon.png"
+    />
+    <meta http-equiv="x-ua-compatible" content="ie=edge; URL=Warenkorb.xhtml" />
+    <link rel="stylesheet" href="mystyle.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous"
+    />
+    <title>AMAZON LIGHT - Warenkorb</title>
+  </h:head>
+  <h:panelGroup rendered="#{warenkorbHandler.getAnzahl()!=0}">
+    <h:body>
+      <div class="header">
+        <div class="container">
+          <div class="navbar">
+            <div class="logo">
+              <a href="index.html"
+                ><img src="images/logo2.png" width="200px"
+              /></a>
+            </div>
+            <nav>
+              <ul id="MenuItems">
+                <li>
+                  <a href="/itechnologien/Startseite"><p>Startseite</p></a>
+                </li>
+                <li>
+                  <div class="dropdown">
+                    <h4>Kategorien</h4>
+                    <div class="dropdown-content">
+                      <ui:repeat
+                        value="#{warenkorbHandler.kategorien}"
+                        var="kat"
+                      >
+                        <a href="Kategorien?Kategorie=#{kat}">#{kat}</a>
+                      </ui:repeat>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <a href="Konto.xhtml"><p>Konto</p></a>
+                </li>
+                <li>
+                  <a href="Warenkorb.xhtml"
+                    ><img src="images/cart.png" width="30px" height="30px"
+                  /></a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <h:form id="form">
+            <div class="row">
+              <div class="col-2">
+                <h3>
+                  #{checkOutHandler.client.vorname}<br />
+                  #{checkOutHandler.client.nachname}<br />
+                  #{checkOutHandler.client.adresse}<br />
+                  #{checkOutHandler.client.plz}
+                  <br /> #{checkOutHandler.client.ort}<br />
+                  #{checkOutHandler.client.land}<br />
+                  <br />
+                  Zahlung durch: #{checkOutHandler.zahlungsmethode}<br />
+                  <br />
+                  Ware:<br />
+                  <ui:repeat value="#{warenkorbHandler.korbBücher}" var="buch">
+                    #{buch.menge}x #{buch.name}
+                    #{warenkorbHandler.getSumme(buch)}€
+                    <br />
+                  </ui:repeat>
+                  <br /><br /> Gesammtsumme:
+                  #{WarenkorbHandler.getGesamtSumme()}€<br /><br />
+                </h3>
+                <h3>Bitte bestätigen sie die Angaben!</h3>
+                <table>
+                  <tr>
+                    <td>
+                      <div align="left">
+                        <a
+                          href="Bestellung.xhtml"
+                          class="btn"
+                          style="width: 8rem"
+                          >&#8592; Zurück zur Kasse
+                        </a>
+                      </div>
+                    </td>
+                    <td>
+                      <div align="right">
+                        <p:commandLink
+                          action="#{bestellHandler.dbEintragen()}"
+                          type="submit"
+                        >
+                          <button class="btn" style="width: 8rem">
+                            Bestätigen &#8594;
+                          </button>
+                        </p:commandLink>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </h:form>
+        </div>
+      </div>
+
+      <script>
+        var MenuItems = document.getElementById("MenuItems");
+        MenuItems.style.maxHeight = "0px";
+
+        function menutoggle() {
+          if ((MenuItems.style.maxHeight = "0px")) {
+            MenuItems.style.maxHeight = "200px";
+          } else {
+            MenuItems.style.maxHeight = "0px";
+          }
+        }
+      </script>
+    </h:body>
+  </h:panelGroup>
+</html>

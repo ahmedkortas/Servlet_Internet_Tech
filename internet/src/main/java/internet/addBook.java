@@ -105,10 +105,6 @@ public void doGet(HttpServletRequest request,
       }catch(Exception e){
          e.printStackTrace();
       }
-      for(int i=0;i<paramNames.size();i++){
-    	 int x =Integer.parseInt(paramNames.get(i));
-         cn.addBuchCategory(isbn,x);
-      }
       try {
          cn.addBook(new Book(title, author, isbn, price, description));
          response.setContentType("text/html");
@@ -126,6 +122,10 @@ public void doGet(HttpServletRequest request,
       } catch (SQLException e) {
          e.printStackTrace();
       }
+      for(int i=0;i<paramNames.size();i++){
+     	 int x =Integer.parseInt(paramNames.get(i));
+          cn.addBuchCategory(isbn,x);
+       }
    }
 
 

@@ -2,11 +2,18 @@
 <qualifiedTypeNameHistroy>
     <fullyQualifiedTypeName name="java.sql.DriverManager"/>
     <fullyQualifiedTypeName name="java.sql.Connection"/>
-    <fullyQualifiedTypeName name="org.apache.openjpa.kernel.FillStrategy.Map"/>
     <fullyQualifiedTypeName name="java.util.Collections"/>
     <fullyQualifiedTypeName name="java.sql.ResultSet"/>
     <fullyQualifiedTypeName name="java.sql.SQLException"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
-    <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="internet.Author"/>
+    <fullyQualifiedTypeName name="config.TemplateEngineUtil"/>
+    <fullyQualifiedTypeName name="config.ThymeleafConfig"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="java.util.HashMap"/>
+    <fullyQualifiedTypeName name="org.apache.openjpa.kernel.FillStrategy.Map"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="java.util.Date"/>
+    <fullyQualifiedTypeName name="javax.faces.context.FacesContext"/>
+    <fullyQualifiedTypeName name="javax.faces.application.FacesMessage"/>
+    <fullyQualifiedTypeName name="org.bouncycastle.crypto.generators.BCrypt"/>
 </qualifiedTypeNameHistroy>
