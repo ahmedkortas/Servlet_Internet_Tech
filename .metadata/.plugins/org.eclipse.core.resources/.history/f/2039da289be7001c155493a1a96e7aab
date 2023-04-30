@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="images/apple-touch-icon.png"
+    />
+    <meta http-equiv="x-ua-compatible" content="ie=edge; URL=Warenkorb.xhtml" />
+    <link rel="stylesheet" type="text/css" href="./css/SignInUp.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <!-- <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap"
+      rel="stylesheet"
+    /> -->
+    <title>Login</title>
+  </h:head>
+  <h:body>
+    <a class="home" href="./index"
+      ><img src="images/logo.ico" class="home"
+    /></a>
+    <div class="main">
+      <input type="checkbox" id="chk" aria-hidden="true" />
+      <div class="signup">
+        <h:form id="Form">
+          <p:messages for="Form" showDetail="true"></p:messages>
+          <label for="chk" aria-hidden="true">Sign up</label>
+          <p:inputText
+            type="text"
+            value="#{LoginHandler.firstName}"
+            placeholder="first name"
+            required=""
+            class="input"
+          />
+          <p:inputText
+            type="text"
+            name="txt"
+            placeholder="last name"
+            required=""
+            value="#{LoginHandler.lastName}"
+            id="input"
+          />
+          <p:inputText
+            type="email"
+            name="email"
+            placeholder="Email"
+            required=""
+            value="#{LoginHandler.email}"
+            class="input"
+          />
+          <p:inputText
+            type="address"
+            name="address"
+            placeholder="address"
+            required=""
+            value="#{LoginHandler.address}"
+            class="input"
+          />
+          <p:inputText
+            type="date"
+            id="start"
+            name="trip-start"
+            min="1920-01-01"
+            max="2022-12-31"
+            required=""
+            value="#{LoginHandler.birthday}"
+            class="input"
+          />
+          <p:inputText
+            type="password"
+            name="password"
+            placeholder="Password"
+            required=""
+            value="#{LoginHandler.password}"
+            class="input"
+          />
+
+          <p:commandLink action="#{LoginHandler.register()}" update="Form">
+            <button class="btn">Registrieren</button>
+          </p:commandLink>
+        </h:form>
+      </div>
+
+      <div class="login">
+        <h:form id="FormLogin">
+          <label for="chk" aria-hidden="true">Login</label>
+          <p:inputText
+            type="email"
+            name="email"
+            placeholder="Email"
+            required=""
+            value="#{LoginHandler.email}"
+            class="input"
+          />
+          <p:inputText
+            type="password"
+            name="password"
+            placeholder="Password"
+            required=""
+            value="#{LoginHandler.password}"
+            class="input"
+          />
+
+          <p:commandLink action="#{LoginHandler.register()}" update="FormLogin">
+            <button class="btn">Registrieren</button>
+          </p:commandLink>
+        </h:form>
+      </div>
+    </div>
+  </h:body>
+</html>

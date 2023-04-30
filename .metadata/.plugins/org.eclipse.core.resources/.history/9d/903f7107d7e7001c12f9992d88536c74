@@ -1,0 +1,42 @@
+package internet;
+
+
+public class CartItems{
+    private String itemName;
+    private int itemprice;
+    private int itemQuantity;
+    private int itemTotal;
+
+    public CartItems(String itemName, int itemprice, int itemQuantity) {
+        this.itemName = itemName;
+        this.itemprice = itemprice;
+        this.itemQuantity = itemQuantity;
+        this.itemTotal = itemprice*itemQuantity;
+    }
+    
+    public String getItemName() {
+        return itemName;
+    }
+    public int getItemprice() {
+        return itemprice;
+    }
+    public int getItemQuantity() {
+        return itemQuantity;
+    }
+    public int getItemTotal() {
+        return itemTotal;
+    }
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+    public void setItemprice(int itemprice) {
+        this.itemprice = itemprice;
+    }
+    public void setItemQuantity(int itemQuantity) {
+        this.itemQuantity = itemQuantity;
+    }
+    public void setItemTotal(int itemTotal) {
+        this.itemTotal = itemTotal;
+    }
+    
+}

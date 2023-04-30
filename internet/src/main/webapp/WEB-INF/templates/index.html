@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="a store to buy books" />
     <title>Book Store</title>
-    <link rel="stylesheet" type="text/css" href="./main.css" />
+    <link href="css/main.css" rel="stylesheet" />
 
     <link
       rel="stylesheet"
@@ -22,8 +22,8 @@
   </head>
   <body>
     <div class="topnav">
-      <a href="./index.html">Book Universe</a>
-      <a href="./index.html">Home</a>
+      <a th:href="index">Book Universe</a>
+      <a th:href="index">Home</a>
       <div class="btn-group mb-2 dropend">
         <button
           id="dropdownMenuButtonKatalog"
@@ -33,47 +33,49 @@
           Katalog
         </button>
         <ul class="dropdown-menu" Katalog="Katalog" id="katalog">
-          <li><a class="dropdown-item" href="./krimi.html">Krimi</a></li>
-          <li><a class="dropdown-item" href="#">Fantasy: </a></li>
-          <li><a class="dropdown-item" href="#">Science-Fiction</a></li>
-          <li>
-            <a class="dropdown-item" href="./liebsroman.html">Liebesromane</a>
+          <li class="dropdown-item" th:each="genre : ${genres}">
+            <a
+              th:href="${'/internet/kategorie?genre=' + genre.getName() }"
+              th:text="${genre.getName}"
+              class="dp"
+            ></a>
           </li>
-          <li><a class="dropdown-item" href="#">Familienroman</a></li>
-          <li><a class="dropdown-item" href="#">Thriller / Gruselromane</a></li>
-          <li><a class="dropdown-item" href="#">Fremdsprachige Bücher</a></li>
         </ul>
       </div>
-      <a href="./SignIn.html" class="right-side">Login</a>
-      <a href="./cart.html" class="right-side"
+      <a href="./SignIn.xhtml" class="right-side">Login</a>
+      <a href="./Warenkorb.xhtml" class="right-side"
         ><i class="fa fa-shopping-cart" style="font-size: 18px"></i
       ></a>
       <input type="text" placeholder="Search.." />
     </div>
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div class="col">
+      <div class="col" th:each="book: ${books}">
         <div class="card h-100">
+          <!-- why is the img not 🏗?  -->
           <img
-            src="https://assets.thalia.media/img/artikel/fcd613696f21f88e7d09908affbf2521066345f5-00-00.jpeg"
+            th:src="${'images/' + book.getIsbn() + '.jpg'}"
             class="card-img-top"
-            alt="..."
+            alt="book image of the book with the corespending
+          isbn"
           />
           <div class="card-body">
-            <a href="./books.html">
-              <h5 class="card-title">Harry Potter</h5>
+            <a th:href="${'book?isbn=' + book.getIsbn()}">
+              <h5 class="card-title" th:text="${book.getTitle()}"></h5>
             </a>
-            <h6 class="card-description">SCI-Fi</h6>
-            <h6 class="card-Author">Author: J. K. Rowling</h6>
-            <p class="card-text">the description of the book it self</p>
+            <h6 class="card-description">
+              <span th:each="genre : ${genreMap[book.getIsbn()]}">
+                <span th:text="${genre+'|'}"></span>
+              </span>
+            </h6>
+            <h6 class="card-Author" th:text="${book.getAuthorName()}"></h6>
+            <p class="card-text" th:text="${book.getDescription()}"></p>
           </div>
           <div class="card-footer">
-            <i
-              class="fa fa-shopping-cart"
-              style="font-size: 18px"
-              onclick="alert('This item was added to your cart')"
-            ></i>
-            <span>isbn:9780747532743</span>
-            <span class="right-side">price : 90$</span>
+            <a th:href="${'WarenkorbParam.xhtml?ISBN='+book.getIsbn()}">
+              <i class="fa fa-shopping-cart" style="font-size: 18px"></i
+            ></a>
+            <span th:text="${book.getIsbn()}"></span>
+            <span class="right-side" th:text="${book.getPrice()}"></span>
           </div>
         </div>
       </div>
@@ -111,7 +113,18 @@
       document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     }
   </script>
-  <script type="text/javascript" src="./JsDropDownFunction.js"></script>
+  <script type="text/javascript">
+    function myFunctionDropDown() {
+      console.log("dropdown");
+      let x = document.getElementById("katalog");
+      console.log(x.style.display);
+      if (x.style.display == "flex") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "flex";
+      }
+    }
+  </script>
   <script tyoe="text/javascript" th:src="@{/resource/js/mdb.min.js}"></script>
 </html>
 <!-- 

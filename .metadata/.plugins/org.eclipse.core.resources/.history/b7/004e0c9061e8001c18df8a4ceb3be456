@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <h:head>
+    <meta charset="UTF-8" />
+    <h:panelGroup rendered="#{warenkorbHandler.getAnzahl()==0}">
+      <meta http-equiv="Refresh" content="0; URL=Warenkorb.xhtml" />
+    </h:panelGroup>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link />
+    <meta http-equiv="x-ua-compatible" content="ie=edge; URL=Warenkorb.xhtml" />
+    <link rel="stylesheet" href="mystyle.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="css/main.css" />
+    <title>BookUniverse</title>
+  </h:head>
+  <h:body>
+    <div class="topnav">
+      <a href="index">Book Universe</a> <a href="index">Home</a>
+      <div class="btn-group mb-2 dropend">
+        <button
+          id="dropdownMenuButtonKatalog"
+          type="button"
+          onclick="myFunctionDropDown()"
+        >
+          Katalog
+        </button>
+        <ul class="dropdown-menu" Katalog="Katalog" id="katalog">
+          <ui:repeat value="#{WarenkorbHandler.getGenres()}" var="kat">
+            <a href="Kategorien?Kategorie=#{kat.getName()}">#{kat.getName()}</a>
+          </ui:repeat>
+        </ul>
+      </div>
+    </div>
+    <div class="small-container" style="background-color: white">
+      <h:form id="form" style="top: 60px">
+        <p:messages for="form" showDetail="true"> </p:messages>
+        <table>
+          <tr>
+            <th width="20%">Lieferdaten</th>
+            <th align="left">(ändern falls abweichend)</th>
+            <th></th>
+          </tr>
+
+          <tr>
+            <td>Straße und Nr.</td>
+            <td>
+              <p:inputText
+                type="text"
+                id="adresse"
+                value="#{checkOutHandler.lf.street}"
+                style="width: 40%"
+              >
+                <p:ajax event="change" update="form" />
+              </p:inputText>
+              <p:message for="adresse" />
+            </td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td>Postleitzahl</td>
+            <td>
+              <p:inputText
+                type="text"
+                id="Postleitzahl"
+                validator="#{kontoHandler.validateNumbers}"
+                value="#{checkOutHandler.lf.plz}"
+                size="5"
+                style="width: 10%"
+              >
+                <!-- <f:validateNumbers minInclusive="1000" maxInclusive="9999" /> -->
+                <p:ajax event="change" update="form" />
+              </p:inputText>
+              <p:message for="Postleitzahl" /> Ort
+              <p:inputText
+                type="text"
+                id="Ort"
+                value="#{checkOutHandler.lf.ort}"
+                style="width: 24.5%"
+              >
+                <p:ajax event="change" update="form" />
+              </p:inputText>
+              <p:message for="Ort" />
+            </td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td>Land</td>
+            <td>
+              <p:inputText
+                type="text"
+                id="Land"
+                value="#{checkOutHandler.lf.land}"
+                style="width: 40%"
+              >
+                <p:ajax event="change" update="form" />
+              </p:inputText>
+              <p:message for="Land" />
+            </td>
+            <td></td>
+          </tr>
+        </table>
+      </h:form>
+      <br /> <br />
+      <h:form id="Methode">
+        <p:messages for="Methode" showDetail="true"> </p:messages>
+        <table>
+          <tr>
+            <th>
+              Zahlungsmethode
+              <h2 style="color: black">#{checkOutHandler.zahlungsmethode}</h2>
+            </th>
+            <th></th>
+            <th></th>
+          </tr>
+
+          <tr>
+            <td>
+              <h:commandLink
+                action="#{checkOutHandler.setZahlungsmethode('Rechnung')}"
+                style="width: 40%"
+              >
+                <button class="btn" style="width: 8rem">Rechnung</button>
+              </h:commandLink>
+            </td>
+
+            <td></td>
+          </tr>
+
+          <tr>
+            <td>
+              <h:commandLink
+                action="#{checkOutHandler.setZahlungsmethode('Kreditkarte')}"
+              >
+                <button class="btn" style="width: 8rem">Kreditkarte</button>
+              </h:commandLink>
+              <h:panelGroup
+                rendered="#{checkOutHandler.zahlungsmethode == 'Kreditkarte'}"
+              >
+                <table>
+                  <tr>
+                    <td width="20%">Kreditkartennummer</td>
+
+                    <td>
+                      <p:inputText
+                        type="number"
+                        id="Kredit"
+                        value="#{checkOutHandler.kd.karteNummer}"
+                        placeholder="xxxx xxxx xxxx xxxx"
+                        style="width: 40%"
+                      >
+                        <!-- <f:validator
+                          type="numberRange"
+                          minInclusive="100000000000"
+                          maxInclusive="999999999999"
+                        /> -->
+                        <p:ajax event="change" update="Methode" />
+                      </p:inputText>
+                      <p:message for="Kredit" />
+                    </td>
+                    <tr>
+                      <td width="20%">kredit karte Name</td>
+                      <td>
+                        <p:inputText
+                          type="text"
+                          id="KreditName"
+                          value="#{checkOutHandler.kd.karteName}"
+                          placeholder="xxxx xxxx xxxx xxxx"
+                          style="width: 40%"
+                        >
+                          <!-- does not have numbers in it  -->
+                          <!-- <f:validateRegex expression="^[a-zA-Z]+$" /> -->
+                          <p:ajax event="change" update="Methode" />
+                        </p:inputText>
+                        <p:message for="Kredit" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="20%">CVC</td>
+                      <td>
+                        <p:inputText
+                          type="number"
+                          id="cvc"
+                          value="#{checkOutHandler.kd.cvc}"
+                          placeholder="xxxx "
+                          style="width: 40%"
+                        >
+                          <p:ajax event="change" update="Methode" />
+                        </p:inputText>
+                        <p:message for="Kredit" />
+                      </td>
+                    </tr>
+                  </tr>
+                </table>
+              </h:panelGroup>
+              <h:panelGroup
+                rendered="#{checkOutHandler.zahlungsmethode ==
+              'Rechnung'}"
+              >
+                <table>
+                  <tr>
+                    <td>Straße und Nr.</td>
+                    <td>
+                      <p:inputText
+                        type="text"
+                        id="adresse"
+                        value="#{checkOutHandler.rc.street}"
+                        style="width: 60%"
+                      >
+                        <p:ajax event="change" update="form" />
+                      </p:inputText>
+                      <p:message for="adresse" />
+                    </td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td>Postleitzahl</td>
+                    <td>
+                      <p:inputText
+                        type="text"
+                        id="Postleitzahl"
+                        validator="#{kontoHandler.validateNumbers}"
+                        value="#{checkOutHandler.rc.plz}"
+                        size="5"
+                        style="width: 60%"
+                      >
+                        <!-- <f:validator
+                          type="numberRange"
+                          minInclusive="1000"
+                          maxInclusive="9999"
+                        /> -->
+                        <p:ajax event="change" update="form" />
+                      </p:inputText>
+                      <p:message for="Postleitzahl" /> Ort
+                      <p:inputText
+                        type="text"
+                        id="Ort"
+                        value="#{checkOutHandler.rc.ort}"
+                        style="width: 60.5%"
+                      >
+                        <p:ajax event="change" update="form" />
+                      </p:inputText>
+                      <p:message for="Ort" />
+                    </td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td>Land</td>
+                    <td>
+                      <p:inputText
+                        type="text"
+                        id="Land"
+                        value="#{checkOutHandler.rc.land}"
+                        style="width: 40%"
+                      >
+                        <p:ajax event="change" update="form" />
+                      </p:inputText>
+                      <p:message for="Land" />
+                    </td>
+                    <td></td>
+                  </tr>
+                </table>
+              </h:panelGroup>
+            </td>
+
+            <td></td>
+          </tr>
+        </table>
+        <div align="right">
+          <p:commandLink
+            type="submit"
+            update="form"
+            action="#{checkOutHandler.validatePayment()}"
+          >
+            <button class="btn">Bestätigen</button>
+          </p:commandLink>
+        </div>
+      </h:form>
+    </div>
+    <script>
+      var MenuItems = document.getElementById("MenuItems");
+      MenuItems.style.maxHeight = "0px";
+
+      function menutoggle() {
+        if ((MenuItems.style.maxHeight = "0px")) {
+          MenuItems.style.maxHeight = "200px";
+        } else {
+          MenuItems.style.maxHeight = "0px";
+        }
+      }
+    </script>
+  </h:body>
+</html>

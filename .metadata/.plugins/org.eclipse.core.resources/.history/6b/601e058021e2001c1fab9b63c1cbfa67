@@ -1,0 +1,40 @@
+package internet;
+import config.TemplateEngineUtil;
+import config.ThymeleafConfig;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+
+@WebServlet("/book")
+public class BookDetailsTh  extends HttpServlet{
+	private static final long serialVersionUID = 100L;
+    private DbConnection cn=null;
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(request.getServletContext());
+        WebContext context = new WebContext(request, response, request.getServletContext());
+        //query a book with the fun getBookByIsbn passing the request parameter isbn
+        Book book = null;
+        try {
+            cn = new DbConnection();
+            book = cn.getBookByIsbn(request.getParameter("isbn"));
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        double price = book.getPrice();
+        DecimalFormat df = new DecimalFormat("0.00");
+            // string arr = df .split(",");
+        String[] arr = df.format(price).split("\\,");
+        book.setPrice(Double.parseDouble(arr[0] + "." + arr[1]));
+        context.setVariable("book", book);
+        engine.process("bookDetails.html", context, response.getWriter());
+    }
+}
