@@ -400,13 +400,39 @@ public class DbConnection {
         }
     }
 
-    public void payedOrder(int order_id, String email, String paymentMethod ,int paymentStatus){
+    public int payedOrder(int order_id, String email, String paymentMethod ,int paymentStatus){
         try {
         	Statement stmt = conn.createStatement();
             int client_id = (getUserId(email));
             //insert the data to table billing
             stmt.executeUpdate("INSERT INTO billing (order_id, customer_id, payment_method, payment_status) VALUES('" + order_id + "','" + client_id + "','" + paymentMethod + "','" + paymentStatus + "')");
+            changeOrderStatus(order_id);
+            createOrder(email);
+            ResultSet rs=stmt.executeQuery("select * from billing where order_id = '" + order_id + "' and customer_id = '" + client_id + "'");
+            rs.next();
+            int billing_id = rs.getInt("id");
+            return billing_id;
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		return -1;
+    }
+
+
+    public void rechnungSaving(RechnungAddress rs, int billing_id){
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO rechnunginfo (billing_id, street, plz, ort, land) VALUES('" + billing_id + "','" + rs.getStreet() + "','" + rs.getPlz() + "','" + rs.getOrt() + "','" + rs.getLand() + "')");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveCard(KarteDetails kd , int billing_id){
+        try{
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO card_info (billing_id, card_number, card_name) VALUES('" + billing_id + "','" + kd.getKarteNummer() + "','" + kd.getKarteName() + "')");
+        }catch( SQLException e){
             e.printStackTrace();
         }
     }

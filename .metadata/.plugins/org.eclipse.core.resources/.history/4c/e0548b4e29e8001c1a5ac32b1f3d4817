@@ -1,0 +1,131 @@
+
+package jsf;
+
+
+
+import java.io.Serializable;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.annotation.ManagedProperty;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import internet.Book;
+import internet.DbConnection;
+import internet.Customer;
+import internet.RechnungAddress;
+import internet.LieferAddress;
+import internet.KarteDetails;
+
+
+
+@Named("checkOutHandler")
+@SessionScoped
+public class checkOutHandler implements Serializable {
+	@Inject
+	@ManagedProperty("#{LoginHandler.client}")
+	private Customer client;
+	private RechnungAddress rc;
+	private LieferAddress lf;
+	private KarteDetails kd;
+
+	public RechnungAddress getRc() {
+		return rc;
+	}
+	public void setRc(RechnungAddress rc) {
+		this.rc = rc;
+	}
+
+	public LieferAddress getLf() {
+		return lf;
+	}
+	public void setLf(LieferAddress lf) {
+		this.lf = lf;
+	}
+	public string getKd() {
+		return kd;
+	}
+	public void setKd(KarteDetails kd) {
+		this.kd = kd;
+	}
+	
+	public Customer getClient() {
+		return this.client;
+	}
+	public void setClient(Customer client) {
+		this.client=client;
+	}
+	
+	private static final long serialVersionUID = 1L;
+	
+//	
+	private String kreditkartennummer ="";
+	private String zahlungsmethode = "";
+	
+	public String getZahlungsmethode() {
+		return zahlungsmethode;
+	}
+
+	public void setZahlungsmethode(String zahlungsmethode) {
+		System.out.println("hey")
+		this.zahlungsmethode = zahlungsmethode;
+	}
+	
+
+	public String getKreditkartennummer() {
+		return kreditkartennummer;
+	}
+
+	public void setKreditkartennummer(String kreditkartennummer) {
+		this.kreditkartennummer = kreditkartennummer;
+	}
+
+	
+	
+	public String validatePayment() throws ClassNotFoundException {
+		
+		System.out.println("validating");
+		if(zahlungsmethode.equals("")) {
+			System.out.println("hier");
+			FacesContext.getCurrentInstance().addMessage("Methode", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Sie m�ssen eine Zahlungsmethode w�hlen"));
+			return null;
+		}
+		
+		if(zahlungsmethode.equals("Kreditkarte")) {
+			try {
+				kreditkartennummer = kreditkartennummer.replaceAll(" ", "");
+				System.out.println(kreditkartennummer.length());
+				long number = Long.parseLong(kreditkartennummer);
+				if(zahlungsmethode.equals("Kreditkarte") && kreditkartennummer.length() !=12) {
+					System.out.println(kreditkartennummer.length());
+					FacesContext.getCurrentInstance().addMessage("Methode:Kredit", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Ung�ltige Kreditkartennummer"));
+					return null;
+				}
+			}catch (NumberFormatException e) {
+				System.out.println(kreditkartennummer);
+				FacesContext.getCurrentInstance().addMessage("Methode:Kredit", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Ung�ltige Kreditkartennummer"));
+				return null;
+			}
+			confirmations(this.client.getOrderId(),this.client.getEmail(),"kreditkate",1);
+			System.out.println("Kreditkarte");
+		}
+		
+		return "end.xhtml?faces-redirect=true";
+	}
+
+
+	public void confirmations(int orderId,String ClientEmail,String zahlungsmethode,int status) throws ClassNotFoundException{
+		
+		DbConnection db = new DbConnection();
+		db.payedOrder(orderId, ClientEmail,zahlungsmethode, status);
+		
+	}
+	
+	
+}

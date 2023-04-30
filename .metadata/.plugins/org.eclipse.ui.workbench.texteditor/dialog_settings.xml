@@ -6,23 +6,23 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="menge"/>
+		<item key="selection" value="zw"/>
 		<list key="findhistory">
-			<item value="menge"/>
-			<item value="logout"/>
-			<item value="log"/>
-			<item value="loug"/>
-			<item value="&lt;i"/>
-			<item value="#{"/>
-			<item value="register"/>
-			<item value="&lt;a"/>
-			<item value="&lt;a "/>
-			<item value="&lt;a href"/>
-			<item value="books"/>
-			<item value="top"/>
-			<item value="black"/>
-			<item value="li a"/>
-			<item value="addBuchCategory"/>
+			<item value="zw"/>
+			<item value="vorname"/>
+			<item value="h:"/>
+			<item value="kontoHandler"/>
+			<item value="kont"/>
+			<item value="setZahlungsmethode"/>
+			<item value="Methode"/>
+			<item value="Me"/>
+			<item value="Postleitzahl"/>
+			<item value="Postleitzahlrc"/>
+			<item value="{}"/>
+			<item value="Form"/>
+			<item value="Meth"/>
+			<item value="get"/>
+			<item value="getbu"/>
 		</list>
 		<list key="replacehistory">
 		</list>

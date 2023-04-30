@@ -12,6 +12,7 @@
       <meta http-equiv="Refresh" content="0; URL=Warenkorb.xhtml" />
     </h:panelGroup>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link />
     <meta http-equiv="x-ua-compatible" content="ie=edge; URL=Warenkorb.xhtml" />
     <link rel="stylesheet" href="mystyle.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -23,12 +24,11 @@
     />
 
     <link rel="stylesheet" href="css/main.css" />
-    <title>book Universe</title>
+    <title>BookUniverse</title>
   </h:head>
   <h:body>
     <div class="topnav">
-      <a href="index">Book Universe</a>
-      <a href="index">Home</a>
+      <a href="index">Book Universe</a> <a href="index">Home</a>
       <div class="btn-group mb-2 dropend">
         <button
           id="dropdownMenuButtonKatalog"
@@ -43,21 +43,7 @@
           </ui:repeat>
         </ul>
       </div>
-      <h:panelGroup layout="block" rendered="#{LoginHandler.loggedIn}">
-        <p:commandLink action="#{LoginHandler.logout()}">
-          <a href="#" class="right-side"> Logout </a>
-        </p:commandLink>
-      </h:panelGroup>
-      <h:panelGroup layout="block" rendered="#{!LoginHandler.loggedIn}">
-        <a href="./SignIn.xhtml" class="right-side">login</a>
-      </h:panelGroup>
-
-      <a href="#" class="right-side"
-        ><i class="fa fa-shopping-cart" style="font-size: 18px"></i
-      ></a>
-      <input type="text" placeholder="Search.." />
     </div>
-
     <div class="small-container" style="background-color: white">
       <h:form id="form" style="top: 60px">
         <p:messages for="form" showDetail="true"> </p:messages>
@@ -74,7 +60,7 @@
               <p:inputText
                 type="text"
                 id="adresse"
-                value="#{checkOutHandler.client.adresse}"
+                value="#{checkOutHandler.lf.street}"
                 style="width: 40%"
               >
                 <p:ajax event="change" update="form" />
@@ -90,18 +76,18 @@
               <p:inputText
                 type="text"
                 id="Postleitzahl"
-                validator="#{kontoHandler.validateNumbers}"
-                value="#{checkOutHandler.client.plz}"
+                value="#{checkOutHandler.lf.plz}"
                 size="5"
                 style="width: 10%"
               >
+                <!-- <f:validateNumbers minInclusive="1000" maxInclusive="9999" /> -->
                 <p:ajax event="change" update="form" />
               </p:inputText>
               <p:message for="Postleitzahl" /> Ort
               <p:inputText
                 type="text"
                 id="Ort"
-                value="#{checkOutHandler.client.ort}"
+                value="#{checkOutHandler.lf.ort}"
                 style="width: 24.5%"
               >
                 <p:ajax event="change" update="form" />
@@ -117,7 +103,7 @@
               <p:inputText
                 type="text"
                 id="Land"
-                value="#{checkOutHandler.client.land}"
+                value="#{checkOutHandler.lf.land}"
                 style="width: 40%"
               >
                 <p:ajax event="change" update="form" />
@@ -128,8 +114,7 @@
           </tr>
         </table>
       </h:form>
-      <br />
-      <br />
+      <br /> <br />
       <h:form id="Methode">
         <p:messages for="Methode" showDetail="true"> </p:messages>
         <table>
@@ -144,13 +129,12 @@
 
           <tr>
             <td>
-              <p:commandLink
+              <h:commandLink
                 action="#{checkOutHandler.setZahlungsmethode('Rechnung')}"
-                update="Methode"
                 style="width: 40%"
+                value="Rechnung"
               >
-                <button class="btn" style="width: 8rem">Rechnung</button>
-              </p:commandLink>
+              </h:commandLink>
             </td>
 
             <td></td>
@@ -158,12 +142,11 @@
 
           <tr>
             <td>
-              <p:commandLink
+              <h:commandLink
                 action="#{checkOutHandler.setZahlungsmethode('Kreditkarte')}"
-                update="Methode"
+                value="kreditKarte"
               >
-                <button class="btn" style="width: 8rem">Kreditkarte</button>
-              </p:commandLink>
+              </h:commandLink>
               <h:panelGroup
                 rendered="#{checkOutHandler.zahlungsmethode == 'Kreditkarte'}"
               >
@@ -173,15 +156,120 @@
 
                     <td>
                       <p:inputText
-                        type="text"
+                        type="number"
                         id="Kredit"
-                        value="#{checkOutHandler.kreditkartennummer}"
+                        value="#{checkOutHandler.kd.karteNummer}"
                         placeholder="xxxx xxxx xxxx xxxx"
                         style="width: 40%"
                       >
+                        <!-- <f:validator
+                          type="numberRange"
+                          minInclusive="100000000000"
+                          maxInclusive="999999999999"
+                        /> -->
                         <p:ajax event="change" update="Methode" />
                       </p:inputText>
                       <p:message for="Kredit" />
+                    </td>
+                    <tr>
+                      <td width="20%">kredit karte Name</td>
+                      <td>
+                        <p:inputText
+                          type="text"
+                          id="KreditName"
+                          value="#{checkOutHandler.kd.karteName}"
+                          placeholder="xxxx xxxx xxxx xxxx"
+                          style="width: 40%"
+                        >
+                          <!-- does not have numbers in it  -->
+                          <!-- <f:validateRegex expression="^[a-zA-Z]+$" /> -->
+                          <p:ajax event="change" update="Methode" />
+                        </p:inputText>
+                        <p:message for="Kredit" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="20%">CVC</td>
+                      <td>
+                        <p:inputText
+                          type="number"
+                          id="cvc"
+                          value="#{checkOutHandler.kd.cvc}"
+                          placeholder="xxxx "
+                          style="width: 40%"
+                        >
+                          <p:ajax event="change" update="Methode" />
+                        </p:inputText>
+                        <p:message for="Kredit" />
+                      </td>
+                    </tr>
+                  </tr>
+                </table>
+              </h:panelGroup>
+              <h:panelGroup
+                rendered="#{checkOutHandler.zahlungsmethode ==
+              'Rechnung'}"
+              >
+                <table>
+                  <tr>
+                    <td>Straße und Nr.</td>
+                    <td>
+                      <p:inputText
+                        type="text"
+                        id="adresse"
+                        value="#{checkOutHandler.rc.street}"
+                        style="width: 60%"
+                      >
+                        <p:ajax event="change" update="form" />
+                      </p:inputText>
+                      <p:message for="adresse" />
+                    </td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td>Postleitzahl</td>
+                    <td>
+                      <p:inputText
+                        type="text"
+                        id="Postleitzahl"
+                        value="#{checkOutHandler.rc.plz}"
+                        size="5"
+                        style="width: 60%"
+                      >
+                        <!-- <f:validator
+                          type="numberRange"
+                          minInclusive="1000"
+                          maxInclusive="9999"
+                        /> -->
+                        <p:ajax event="change" update="form" />
+                      </p:inputText>
+                      <p:message for="Postleitzahl" /> Ort
+                      <p:inputText
+                        type="text"
+                        id="Ort"
+                        value="#{checkOutHandler.rc.ort}"
+                        style="width: 60.5%"
+                      >
+                        <p:ajax event="change" update="form" />
+                      </p:inputText>
+                      <p:message for="Ort" />
+                    </td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td>Land</td>
+                    <td>
+                      <p:inputText
+                        type="text"
+                        id="Land"
+                        value="#{checkOutHandler.rc.land}"
+                        style="width: 40%"
+                      >
+                        <p:ajax event="change" update="form" />
+                      </p:inputText>
+                      <p:message for="Land" />
                     </td>
                     <td></td>
                   </tr>
@@ -192,19 +280,17 @@
             <td></td>
           </tr>
         </table>
+        <div align="right">
+          <h:commandLink
+            type="submit"
+            update="form"
+            action="#{checkOutHandler.zwichenstand()}"
+          >
+            <button class="btn">Bestätigen</button>
+          </h:commandLink>
+        </div>
       </h:form>
-
-      <div align="right">
-        <p:commandLink
-          type="submit"
-          update="Methode"
-          action="#{checkOutHandler.validatePayment()}"
-        >
-          <button class="btn">Bestätigen</button>
-        </p:commandLink>
-      </div>
     </div>
-
     <script>
       var MenuItems = document.getElementById("MenuItems");
       MenuItems.style.maxHeight = "0px";

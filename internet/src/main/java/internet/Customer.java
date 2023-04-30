@@ -10,11 +10,6 @@ public class Customer {
     private String address;
     private int orderId;
 
-    private String kreditkartennummer;
-    private String zahlungsmethode;
-    private String plz;
-    private String ort;
-    private String land;
 
     public Customer( String firstName, String lastName, String password, String email, String birthday, String address) {
         this.username = firstName+" "+lastName;
@@ -25,6 +20,13 @@ public class Customer {
         this.birthday = birthday;
         this.address = address;
     }
+    public void setAdress(String address) {
+    	this.address=address;
+    }
+    public String getAddress() {
+    	return this.address;
+    }
+    
     public int getOrderId() {
     	return this.orderId;
     }
@@ -51,9 +53,7 @@ public class Customer {
     public String getBirthday() {
         return birthday;
     }
-    public String getAddress() {
-        return address;
-    }
+ 
     public void setUsername(String username) {
         this.username = username;
     }

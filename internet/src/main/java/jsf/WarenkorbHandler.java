@@ -92,6 +92,8 @@ public class WarenkorbHandler {
 		for (CartItems b : bucher) {
 			sum += b.getItemTotal();
 		}
+		DecimalFormat df = new DecimalFormat("#.##");
+        String formatHolder = (df.format(sum));
 		return sum;
     }
 
